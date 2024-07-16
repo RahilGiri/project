@@ -1,0 +1,24 @@
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
+from torchvision import datasets, transforms
+
+# Define the transformation pipeline
+transform = A.Compose([
+    A.RandomResizedCrop(256, 256),
+    A.HorizontalFlip(),
+    A.RandomBrightnessContrast(),
+    A.ShiftScaleRotate(),
+    A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+    ToTensorV2()
+])
+
+def transform_fn(image):
+    return transform(image=np.array(image))['image']
+
+train_dataset = datasets.ImageFolder(root='path/to/train', transform=transform_fn)
+val_dataset = datasets.ImageFolder(root='path/to/validation', transform=transform_fn)
+test_dataset = datasets.ImageFolder(root='path/to/test', transform=transform_fn)
+
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, shuffle=False)
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False)
