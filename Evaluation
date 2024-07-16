@@ -1,0 +1,20 @@
+from sklearn.metrics import roc_auc_score, classification_report
+
+# Evaluation on test set
+model.eval()
+all_labels = []
+all_preds = []
+with torch.no_grad():
+    for inputs, labels in test_loader:
+        inputs, labels = inputs.cuda(), labels.cuda().float().unsqueeze(1)
+        outputs = model(inputs)
+        preds = outputs.cpu().numpy()
+        all_labels.extend(labels.cpu().numpy())
+        all_preds.extend(preds)
+
+# Calculate ROC AUC
+roc_auc = roc_auc_score(all_labels, all_preds)
+print(f"ROC AUC Score: {roc_auc:.4f}")
+
+# Classification report
+print(classification_report(all_labels, all_preds > 0.5))
