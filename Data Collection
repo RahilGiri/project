@@ -1,0 +1,9 @@
+# Assuming you have already downloaded and unzipped the dataset
+import os
+import pandas as pd
+
+# Load annotations
+annotations = pd.read_csv('path/to/annotations.csv')
+
+# Display some sample data
+print(annotations.head())
