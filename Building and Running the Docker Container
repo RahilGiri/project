@@ -1,0 +1,2 @@
+docker build -t medical-imaging-diagnosis .
+docker run -p 5000:5000 medical-imaging-diagnosis
